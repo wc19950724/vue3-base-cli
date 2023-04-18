@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "target": "ES5",
+    "downlevelIteration": true,
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "types": ["node"],
+    "lib": ["ES2017", "dom"],
+    "declaration": false,
+    "noEmit": false,
+  },
+  "include": ["src/**/*.ts", "lib/**/*.js"],
+  "exclude": ["node_modules"],
+}

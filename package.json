@@ -1,0 +1,27 @@
+{
+  "name": "ts-v3-cli",
+  "version": "0.0.1",
+  "description": "vue3+ts+tdesign 后台管理系统脚手架工具",
+  "scripts": {
+    "build": "rimraf lib && tsc"
+  },
+  "bin": {
+    "v3-cli": "bin/v3-cli"
+  },
+  "keywords": [
+    "vue3",
+    "ts",
+    "cli"
+  ],
+  "author": "Wang",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "chalk": "^4.1.2",
+    "commander": "^10.0.1",
+    "enquirer": "^2.3.6",
+    "fs-extra": "^11.1.1",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4"
+  }
+}

@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "module": "CommonJS",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": ".",
+    "module": "ESNext",
     "moduleResolution": "node",
+    "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "target": "ES5",
-    "downlevelIteration": true,
-    "rootDir": "./src",
-    "outDir": "./lib",
+    "target": "ESNext",
     "types": ["node"],
-    "lib": ["ES2017", "dom"],
+    "resolveJsonModule": true,
+    "noEmit": true,
     "declaration": false,
-    "noEmit": false,
+    "allowJs": true
   },
-  "include": ["src/**/*.ts", "lib/**/*.js"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "lib"]
 }

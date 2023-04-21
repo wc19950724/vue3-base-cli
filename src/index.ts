@@ -1,49 +1,65 @@
-import logger from './utils/logger';
 import { execSync } from "child_process";
-import { confirmInstall, promptQuestions, selectAction } from './utils/enquirer';
-import { gitPath } from './config'
+import { program } from "commander";
+import { existsSync, readFileSync, writeFileSync } from "fs-extra";
+import { resolve } from "path";
+import { rimraf } from "rimraf";
 
-const pkg = require('../package.json');
-const { program } = require('commander');
-const path = require("path");
-const fs = require("fs-extra");
+import {
+  description as pkg_description,
+  name as pkg_name,
+  version as pkg_version,
+} from "../package.json";
+import config from "./config";
+import {
+  deleteConfirm,
+  installConfirm,
+  operationTips,
+  promptQuestions,
+} from "./utils/enquirer";
+import logger from "./utils/logger";
 
-program.name(pkg.name).version(pkg.version).description(pkg.description);
+program.name(pkg_name).version(pkg_version).description(pkg_description);
 
-program
-  .command("create <project-name>")
-  .action(async (projectName: string) => {
-    logger.info(`开始创建项目${projectName}...`);
+program.command("create <project-name>").action(async (projectName: string) => {
+  logger.info(`开始创建项目${projectName}`);
+  try {
+    const answers = await promptQuestions(projectName);
+
+    const { name, description, author } = answers;
+    const targetDir = resolve(projectName); // 生成项目的目录
+
+    // Check if target directory exists
+    if (existsSync(targetDir)) {
+      await deleteConfirm(projectName, targetDir);
+    }
+    logger.info(`克隆远程仓库`);
+    execSync(`git clone ${config.gitPath} ${targetDir}`, { stdio: "inherit" });
+    // Delete .git
+    const gitFile = resolve(targetDir, ".git");
+    await rimraf(gitFile);
+    // Update package.json
+    const packageFile = resolve(targetDir, "package.json");
+    const packageData = readFileSync(packageFile, "utf8");
+    const data = JSON.parse(packageData);
+    data.name = name;
+    data.author = author;
+    data.description = description;
+    writeFileSync(packageFile, JSON.stringify(data, null, "\t") + "\n", {
+      flag: "w+",
+    });
+
+    logger.success("项目创建成功!");
+    let installed: string | boolean = false;
     try {
-
-    const answers = await promptQuestions()
-
-      const { name, description, author } = answers;
-      const targetDir = path.resolve(projectName); // 生成项目的目录
-  
-      // Check if target directory exists
-      if (fs.existsSync(targetDir)) {
-        await selectAction(projectName, targetDir)
-      }
-      logger.info(`克隆远程仓库中...`);
-      execSync(`git clone ${gitPath} ${targetDir}`)
-      // Delete .git
-      const gitFile = path.resolve(targetDir, ".git");
-      await fs.remove(gitFile);
-      // Update package.json
-      const packageFile = path.resolve(targetDir, "package.json");
-      const packageData = fs.readFileSync(packageFile, 'utf8');
-      const data = JSON.parse(packageData);
-      data.name = name;
-      data.author = author;
-      data.description = description;
-      await fs.writeFileSync(packageFile, JSON.stringify(data, null, '\t') + '\n');
-  
-      logger.success("项目创建成功!");
-      await confirmInstall(targetDir)
+      installed = await installConfirm(targetDir);
     } catch (error) {
       error && logger.error(`项目创建失败: ${error}`);
     }
-  });
+    operationTips(projectName, installed);
+  } catch (error) {
+    error && logger.error(`项目创建失败: ${error}`);
+  }
+  process.exit(1);
+});
 
 program.parse(process.argv);

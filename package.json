@@ -21,10 +21,9 @@
   "main": "lib/cli.js",
   "scripts": {
     "build": "rimraf lib && yarn fix && rollup -c",
-    "lint": "eslint .",
-    "lint:fix": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
+    "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
     "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --loglevel warn --write",
-    "fix": "yarn prettier && yarn lint:fix && tsc"
+    "fix": "yarn prettier && tsc && yarn lint"
   },
   "bin": {
     "vue3-base": "bin/cli"
@@ -57,7 +56,7 @@
     "typescript": "^5.0.4"
   },
   "lint-staged": {
-    "*.{.js,.cjs,.mjs,.ts,.cts,.mts}": [
+    "*.{js,cjs,mjs,ts,cts,mts}": [
       "yarn fix"
     ]
   },

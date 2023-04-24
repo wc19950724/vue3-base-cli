@@ -1,3 +1,10 @@
+# [1.0.4](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.3...v1.0.4) (2023-4-24)
+
+### Features
+
+- **version:** update version to v1.0.4
+- **settings:** files.exclude: ".vscode", "\*.lock", "node_modules", "LICENSE", ".github"
+
 # [1.0.3](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.2...v1.0.3) (2023-4-24)
 
 ### Doc

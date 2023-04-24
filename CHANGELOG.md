@@ -1,16 +1,22 @@
-# [1.0.2](https://github.com/wc19950724/vue3-base/compare/v1.0.1...v1.0.2) (2023-4-24)
+# [1.0.3](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.2...v1.0.3) (2023-4-24)
+
+### Doc
+
+- **version:** update version to v1.0.3
+
+# [1.0.2](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.1...v1.0.2) (2023-4-24)
 
 ### Doc
 
 - **version:** update version to v1.0.2
 
-# [1.0.1](https://github.com/wc19950724/vue3-base/compare/v1.0.0...v1.0.1) (2023-4-24)
+# [1.0.1](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.0...v1.0.1) (2023-4-24)
 
 ### Doc
 
 - **version:** update version to v1.0.1
 
-# [1.0.0](https://github.com/wc19950724/vue3-base/compare/master...v0.0.1) (2023-4-24)
+# [1.0.0](https://github.com/wc19950724/vue3-base-cli/compare/master...v1.0.0) (2023-4-24)
 
 ### Features
 

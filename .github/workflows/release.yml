@@ -62,13 +62,9 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
-      - name: Set up NPM registry authentication
-        run: |
-          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > ~/.npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Publish to npm
         run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > ~/.npmrc
           node --version
           npm publish
         env:

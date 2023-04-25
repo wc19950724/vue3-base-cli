@@ -1,3 +1,9 @@
+# [1.0.5](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.4...v1.0.5) (2023-4-25)
+
+### Actions Change
+
+- **release timing**: push tags 'v\*'
+
 # [1.0.4](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.3...v1.0.4) (2023-4-24)
 
 ### Features

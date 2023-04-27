@@ -1,5 +1,6 @@
+import { execSync } from "node:child_process";
+
 import { cyanBright, yellowBright } from "chalk";
-import { execSync } from "child_process";
 import { prompt } from "enquirer";
 import { rimraf } from "rimraf";
 

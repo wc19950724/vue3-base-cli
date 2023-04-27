@@ -1,8 +1,8 @@
+import { execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 
-import { execSync } from "child_process";
 import { program } from "commander";
-import { resolve } from "path";
 import { rimraf } from "rimraf";
 
 import config from "./config";
@@ -14,7 +14,7 @@ import {
 } from "./utils/enquirer";
 import logger from "./utils/logger";
 
-const pkgPath = resolve(process.cwd(), "package.json");
+const pkgPath = resolve(__dirname, "..", "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
 program.name(pkg.name).version(pkg.version).description(pkg.description);
 

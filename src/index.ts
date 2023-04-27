@@ -1,14 +1,10 @@
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+
 import { execSync } from "child_process";
 import { program } from "commander";
-import { existsSync, readFileSync, writeFileSync } from "fs-extra";
 import { resolve } from "path";
 import { rimraf } from "rimraf";
 
-import {
-  description as pkg_description,
-  name as pkg_name,
-  version as pkg_version,
-} from "../package.json";
 import config from "./config";
 import {
   deleteConfirm,
@@ -18,7 +14,9 @@ import {
 } from "./utils/enquirer";
 import logger from "./utils/logger";
 
-program.name(pkg_name).version(pkg_version).description(pkg_description);
+const pkgPath = resolve(process.cwd(), "package.json");
+const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+program.name(pkg.name).version(pkg.version).description(pkg.description);
 
 program.command("create <project-name>").action(async (projectName: string) => {
   logger.info(`开始创建项目${projectName}`);

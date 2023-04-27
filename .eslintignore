@@ -2,3 +2,5 @@ node_modules/
 lib/
 *.lock
 *.log
+scripts/**
+!scripts/**/*.ts

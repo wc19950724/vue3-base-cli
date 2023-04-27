@@ -14,7 +14,8 @@
     "noEmit": true,
     "declaration": false,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "exclude": ["node_modules", "lib"]
 }

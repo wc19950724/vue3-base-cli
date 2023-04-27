@@ -18,10 +18,10 @@
   "editor.tabSize": 2,
   "files.eol": "\n",
   "files.exclude": {
-    ".vscode": true,
-    "*.lock": true,
-    "node_modules": true,
-    "LICENSE": true,
-    ".github": true
+    ".vscode": false,
+    "*.lock": false,
+    "node_modules": false,
+    "LICENSE": false,
+    ".github": false
   }
 }

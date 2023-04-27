@@ -166,7 +166,11 @@ function updatePackage(
 }
 
 async function getCurrentBranch() {
-  const result = await run("git", ["branch", "--show-current"]);
+  const result = await run("git", ["branch", "--show-current"], {
+    stdio: "pipe",
+  });
+  console.log(result, "看看本地分支信息");
+
   return result.stdout.trim();
 }
 

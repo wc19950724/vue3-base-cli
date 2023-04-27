@@ -10591,7 +10591,10 @@ function updatePackage(pkgRoot, version, getNewPackageName) {
     node_fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
 }
 async function getCurrentBranch() {
-    const result = await run("git", ["branch", "--show-current"]);
+    const result = await run("git", ["branch", "--show-current"], {
+        stdio: "pipe",
+    });
+    console.log(result, "看看本地分支信息");
     return result.stdout.trim();
 }
 main().catch((err) => {

@@ -10561,7 +10561,19 @@ async function main() {
     });
     if (publishOk) {
         await runIfNotDry("git", ["push", "origin", `refs/tags/v${targetVersion}`]);
-        await runIfNotDry("git", ["push"]);
+        try {
+            await runIfNotDry("git", ["push"]);
+        }
+        catch (error) {
+            const branch = await getCurrentBranch();
+            try {
+                await runIfNotDry("git", ["push", "--set-upstream", "origin", branch]);
+                console.log(`Upstream branch set successfully for ${branch}.`);
+            }
+            catch (error) {
+                console.error(`Failed to set upstream branch for ${branch}:`, error);
+            }
+        }
     }
     if (isDryRun) {
         console.log(`\nDry run finished - run git diff to see package changes.`);
@@ -10577,6 +10589,10 @@ function updatePackage(pkgRoot, version, getNewPackageName) {
     pkg.name = getNewPackageName(pkg.name);
     pkg.version = version;
     node_fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
+}
+async function getCurrentBranch() {
+    const result = await run("git", ["branch", "--show-current"]);
+    return result.stdout.trim();
 }
 main().catch((err) => {
     updateVersions(currentVersion);

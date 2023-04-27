@@ -126,9 +126,13 @@ async function main() {
   });
 
   if (publishOk) {
-    await runIfNotDry("git", ["push", "origin", `refs/tags/v${targetVersion}`]);
     try {
       await runIfNotDry("git", ["push"]);
+      await runIfNotDry("git", [
+        "push",
+        "origin",
+        `refs/tags/v${targetVersion}`,
+      ]);
     } catch (error) {
       const branch = await getCurrentBranch();
       try {

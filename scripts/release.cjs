@@ -10560,9 +10560,13 @@ async function main() {
         message: `Publish to Git?`,
     });
     if (publishOk) {
-        await runIfNotDry("git", ["push", "origin", `refs/tags/v${targetVersion}`]);
         try {
             await runIfNotDry("git", ["push"]);
+            await runIfNotDry("git", [
+                "push",
+                "origin",
+                `refs/tags/v${targetVersion}`,
+            ]);
         }
         catch (error) {
             const branch = await getCurrentBranch();

@@ -1,3 +1,7 @@
+## [1.0.9](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.8...v1.0.9) (2023-04-27)
+
+
+
 ## [1.0.8](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.7...v1.0.8) (2023-04-27)
 
 

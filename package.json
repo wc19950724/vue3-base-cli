@@ -24,7 +24,8 @@
     "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
     "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --loglevel warn --write",
     "fix": "yarn prettier && tsc && yarn lint",
-    "release": "rollup -c rollup.scripts.mjs && node scripts/release.cjs",
+    "build:scripts": "rollup -c rollup.scripts.mjs",
+    "release": "yarn build:scripts && node scripts/release.cjs",
     "changelog": "standard-changelog -i CHANGELOG.md -s -r 0"
   },
   "bin": {

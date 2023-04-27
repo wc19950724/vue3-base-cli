@@ -10468,7 +10468,6 @@ const currentVersion = pkg.version;
 const args = minimist$1(process.argv.slice(2));
 const preId = args.preid || prerelease$1(currentVersion)?.[0];
 const isDryRun = args.dry;
-const keepThePackageName = (pkgName) => pkgName;
 const versionIncrements = [
     "patch",
     "minor",
@@ -10478,7 +10477,14 @@ const versionIncrements = [
         : []),
 ];
 const inc = (i) => semverInc(currentVersion, i, preId);
-const run = (bin, args, opts = {}) => execa(bin, args, { stdio: "inherit", ...opts });
+const run = (bin, args, opts = {}) => {
+    try {
+        return execa(bin, args, { stdio: "inherit", ...opts });
+    }
+    catch (error) {
+        return Promise.reject(error);
+    }
+};
 const dryRun = async (bin, args, opts = {}) => console.log(chalk$1.blue(`[dryrun] ${bin} ${args.join(" ")}`), opts);
 const runIfNotDry = isDryRun ? dryRun : run;
 const step = (msg) => console.log(chalk$1.cyan(msg));
@@ -10521,12 +10527,10 @@ async function main() {
         name: "yes",
         message: `Releasing v${targetVersion}. Confirm?`,
     });
-    if (!confirmRelease) {
+    if (!confirmRelease)
         return;
-    }
-    // update all package versions and inter-dependencies
-    step("\nUpdating cross dependencies...");
-    updateVersions(targetVersion, keepThePackageName);
+    step("\nUpdating package versions...");
+    updateVersions(targetVersion);
     // generate changelog
     step("\nGenerating changelog...");
     await run(`yarn`, ["run", "changelog"]);
@@ -10535,13 +10539,15 @@ async function main() {
         name: "yes",
         message: `Changelog generated. Does it look good?`,
     });
-    if (!changelogOk) {
+    if (!changelogOk)
         return;
-    }
-    // update yarn-lock.yaml
-    // skipped during canary release because the package names changed and installing with `workspace:*` would fail
     step("\nUpdating lockfile...");
-    await run(`yarn`, ["install", "--prefer-offline"]);
+    try {
+        await run(`yarn`, ["install", "--prefer-offline"]);
+    }
+    catch (error) {
+        await run(`yarn`, ["install"]);
+    }
     const { stdout } = await run("git", ["diff"], { stdio: "pipe" });
     if (stdout) {
         step("\nCommitting changes...");
@@ -10553,53 +10559,37 @@ async function main() {
     }
     // push to GitHub
     step("\nPushing to GitHub...");
-    await runIfNotDry("git", ["tag", `v${targetVersion}`]);
     const { yes: publishOk } = await enquirer$1.prompt({
         type: "confirm",
         name: "yes",
         message: `Publish to Git?`,
     });
     if (publishOk) {
-        try {
-            await runIfNotDry("git", ["push"]);
+        await runIfNotDry("git", ["config", "--global", "push.default", "current"]);
+        await runIfNotDry("git", ["push"]);
+        const { yes: tagOk } = await enquirer$1.prompt({
+            type: "confirm",
+            name: "yes",
+            message: `Generate & Publish Tag: v${targetVersion}?`,
+        });
+        if (tagOk) {
+            await runIfNotDry("git", ["tag", `v${targetVersion}`]);
             await runIfNotDry("git", [
                 "push",
                 "origin",
                 `refs/tags/v${targetVersion}`,
             ]);
         }
-        catch (error) {
-            const branch = await getCurrentBranch();
-            try {
-                await runIfNotDry("git", ["push", "--set-upstream", "origin", branch]);
-                console.log(`Upstream branch set successfully for ${branch}.`);
-            }
-            catch (error) {
-                console.error(`Failed to set upstream branch for ${branch}:`, error);
-            }
-        }
     }
     if (isDryRun) {
         console.log(`\nDry run finished - run git diff to see package changes.`);
     }
 }
-function updateVersions(version, getNewPackageName = keepThePackageName) {
-    // 1. update root package.json
-    updatePackage(process.cwd(), version, getNewPackageName);
-}
-function updatePackage(pkgRoot, version, getNewPackageName) {
-    pkgPath = path$3.resolve(pkgRoot, "package.json");
+function updateVersions(version) {
+    pkgPath = path$3.resolve(process.cwd(), "package.json");
     pkg = JSON.parse(node_fs.readFileSync(pkgPath, "utf-8"));
-    pkg.name = getNewPackageName(pkg.name);
     pkg.version = version;
     node_fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
-}
-async function getCurrentBranch() {
-    const result = await run("git", ["branch", "--show-current"], {
-        stdio: "pipe",
-    });
-    console.log(result, "看看本地分支信息");
-    return result.stdout.trim();
 }
 main().catch((err) => {
     updateVersions(currentVersion);

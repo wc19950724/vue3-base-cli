@@ -2,6 +2,21 @@
   "name": "vue3-base-cli",
   "version": "1.0.10",
   "description": "vue3-base 项目脚手架安装工具",
+  "main": "lib/cli.js",
+  "bin": {
+    "vue3-base": "bin/cli"
+  },
+  "scripts": {
+    "start": "node lib/cli.js",
+    "build": "pnpm fix && rollup -c",
+    "fix": "pnpm prettier && tsc && pnpm lint",
+    "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
+    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wc19950724/vue3-base-cli.git"
+  },
   "keywords": [
     "vue3",
     "ts",
@@ -9,62 +24,43 @@
     "tdesign",
     "tdesign-vue-next"
   ],
-  "license": "MIT",
   "author": "948533798@qq.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wc19950724/vue3-base-cli.git"
-  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wc19950724/vue3-base-cli/issues"
   },
-  "main": "lib/cli.js",
-  "scripts": {
-    "build": "rimraf lib && yarn fix && rollup -c",
-    "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
-    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --loglevel warn --write",
-    "fix": "yarn prettier && tsc && yarn lint",
-    "build:scripts": "rollup -c rollup.scripts.mjs",
-    "release": "yarn build:scripts && node scripts/release.cjs",
-    "changelog": "standard-changelog -i CHANGELOG.md -s -r 0"
-  },
-  "bin": {
-    "vue3-base": "bin/cli"
-  },
+  "homepage": "https://github.com/wc19950724/vue3-base-cli#readme",
   "devDependencies": {
     "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-terser": "^0.4.1",
     "@rollup/plugin-typescript": "^11.1.0",
-    "@types/minimist": "^1.2.2",
     "@types/node": "^18.15.11",
     "@types/semver": "^7.3.13",
     "@typescript-eslint/parser": "^5.59.0",
-    "chalk": "^4.1.2",
+    "chalk-cjs": "^5.2.0",
     "commander": "^10.0.1",
     "enquirer": "^2.3.6",
-    "eslint": "^8.38.0",
+    "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "execa": "^7.1.1",
     "ghooks": "^2.0.4",
-    "lint-staged": "^13.2.1",
-    "minimist": "^1.2.8",
-    "prettier": "^2.8.7",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
     "rimraf": "^5.0.0",
-    "rollup": "^3.20.6",
-    "rollup-plugin-node-externals": "^5.1.2",
+    "rollup": "^3.21.0",
     "semver": "^7.5.0",
-    "standard-changelog": "^2.0.27",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,cts,mts}": [
-      "yarn fix"
+      "pnpm fix"
     ]
   },
   "config": {

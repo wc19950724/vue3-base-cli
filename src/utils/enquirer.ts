@@ -1,12 +1,7 @@
-import { execSync } from "node:child_process";
-
-import { cyanBright, yellowBright } from "chalk";
 import { prompt } from "enquirer";
 import { rimraf } from "rimraf";
 
-import config from "../config";
-import logger from "./logger";
-import { command } from "./urils";
+import { cmdInstalled, getCmds, run, step } from "./utils";
 
 /** 项目配置询问 */
 async function promptQuestions(name: string) {
@@ -14,12 +9,12 @@ async function promptQuestions(name: string) {
     {
       type: "input",
       name: "name",
-      message: cyanBright("项目名称:"),
+      message: "Project name:",
       initial: () => name,
       validate: (input: string) => {
         const reg = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*)?[a-z0-9-~][a-z0-9-._~]*$/;
         if (!reg.test(input)) {
-          return "项目名称不符合规范: ^(?:@[a-z0-9-*~][a-z0-9-*._~]*)?[a-z0-9-~][a-z0-9-._~]*$";
+          return "The project name does not meet the specifications: ^(?:@[a-z0-9-*~][a-z0-9-*._~]*)?[a-z0-9-~][a-z0-9-._~]*$";
         }
         return true;
       },
@@ -27,11 +22,11 @@ async function promptQuestions(name: string) {
     {
       type: "input",
       name: "description",
-      message: cyanBright("项目描述:"),
+      message: "description:",
       validate: (input: string) => {
         const reg = /^.{0,100}$/;
         if (!reg.test(input)) {
-          return "项目描述不得超过100个字符";
+          return "The description must not exceed 100 characters";
         }
         return true;
       },
@@ -39,11 +34,11 @@ async function promptQuestions(name: string) {
     {
       type: "input",
       name: "author",
-      message: cyanBright("作者:"),
+      message: "author:",
       validate: (input: string) => {
         const reg = /^.{0,50}$/;
         if (!reg.test(input)) {
-          return "作者不得超过50个字符";
+          return "The author must not exceed 50 characters";
         }
         return true;
       },
@@ -58,51 +53,70 @@ async function deleteConfirm(dirName: string, dirPath: string) {
     {
       type: "toggle",
       name: "action",
-      message: yellowBright(`删除已有目录 <${dirName}>?`),
+      message: `Delete existing directory <${dirName}>?`,
       initial: true,
       stdin: process.stdin,
     },
   ]);
   if (action) {
-    logger.info(`删除目录'${dirName}'`);
+    step(`Delete directory: '${dirName}'`);
     await rimraf(dirPath);
     return Promise.resolve();
   }
-  return Promise.reject("已取消创建");
+  return Promise.reject("Cancelled creation");
 }
 
 /** 安装依赖确认 */
 async function installConfirm(dirName: string) {
-  const { action } = await prompt<{ action: string }>([
+  const { yes } = await prompt<{ yes: string }>([
     {
-      type: "toggle",
-      name: "action",
-      message: cyanBright("安装项目依赖?"),
+      type: "confirm",
+      name: "yes",
+      message: "install packages?",
       initial: true,
-      stdin: process.stdin,
     },
   ]);
-  if (action) {
-    // 执行安装依赖的操作
-    process.chdir(dirName);
-    try {
-      execSync(`${command} install`, { stdio: "inherit" });
-      logger.success("依赖安装成功!");
-      return action;
-    } catch (error) {
-      return Promise.reject(error);
+  if (!yes) return false;
+  // 执行安装依赖的操作
+  process.chdir(dirName);
+  const command = await selectCmd();
+  const isInstalled = await cmdInstalled(command);
+  if (!isInstalled) {
+    await run("npm", ["install", "-g", command]);
+  }
+  step(`${command} version`);
+  await run(command, ["--version"]);
+  try {
+    await run(command, ["install", "--prefer-offline"]);
+  } catch (error) {
+    await run(command, ["install"]);
+  }
+  step("Dependency installation successful!");
+  return true;
+}
+
+/** 选择node命令工具 */
+async function selectCmd(needSelection = true) {
+  let command = "npm";
+  const cmds = getCmds();
+  if (cmds.length === 1) {
+    command = cmds[0];
+  } else if (cmds.length > 1) {
+    if (needSelection) {
+      const { result } = await prompt<{
+        result: string;
+      }>({
+        type: "select",
+        name: "result",
+        message: "Select cmd type",
+        choices: cmds,
+      });
+      command = result;
+    } else {
+      command = `(${cmds.join(" | ")})`;
     }
   }
-  return false;
+  return command;
 }
 
-/** 输出操作提示 */
-function operationTips(name: string, installed: string | boolean) {
-  logger.log(`\r\n`);
-  logger.info(`cd ${name}`);
-  !installed && logger.info(`${command} install`);
-  logger.info(`${command} ${config.startCommand}`);
-  logger.log(`\r\n`);
-}
-
-export { deleteConfirm, installConfirm, operationTips, promptQuestions };
+export { deleteConfirm, installConfirm, promptQuestions, selectCmd };

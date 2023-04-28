@@ -1,41 +1,23 @@
-import { blueBright, greenBright, redBright, yellowBright } from "chalk";
-
-import { errorEmoji, infoEmoji, successEmoji, warningEmoji } from "./urils";
+import chalk from "chalk-cjs";
 
 function error(...args: any[]) {
-  console.log(
-    `${redBright(errorEmoji)}${redBright(" -- ")}${redBright(args)}${redBright(
-      " -- "
-    )}`
-  );
+  console.log(chalk.redBright(...args));
 }
 
 function warn(...args: any[]) {
-  console.log(
-    `${yellowBright(warningEmoji)}${yellowBright(" -- ")}${yellowBright(
-      args
-    )}${yellowBright(" -- ")}`
-  );
+  console.log(chalk.yellowBright(...args));
 }
 
 function info(...args: any[]) {
-  console.log(
-    `${blueBright(infoEmoji)}${blueBright(" -- ")}${blueBright(
-      args
-    )}${blueBright(" -- ")}`
-  );
+  console.log(chalk.blueBright(...args));
 }
 
 function success(...args: any[]) {
-  console.log(
-    `${greenBright(successEmoji)}${greenBright(" -- ")}${greenBright(
-      args
-    )}${greenBright(" -- ")}`
-  );
+  console.log(chalk.greenBright(...args));
 }
 
 function log(...args: any[]) {
-  console.log(blueBright(args));
+  console.log(...args);
 }
 
 export default {

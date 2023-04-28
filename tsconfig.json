@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": ".",
+    "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
+    "types": ["node"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "target": "ESNext",
-    "types": ["node"],
-    "resolveJsonModule": true,
     "noEmit": true,
     "declaration": false,
     "allowJs": true,

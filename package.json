@@ -11,7 +11,8 @@
     "build": "pnpm fix && rollup -c",
     "fix": "pnpm prettier && tsc && pnpm lint",
     "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
-    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --write"
+    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --write",
+    "release": "release-cli"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,7 @@
     "ghooks": "^2.0.4",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
+    "release-base-cli": "0.0.1-rc.8",
     "rimraf": "^5.0.0",
     "rollup": "^3.21.0",
     "semver": "^7.5.0",

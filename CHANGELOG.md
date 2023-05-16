@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/wc19950724/vue3-base-cli/compare/v1.1.0-alpha.0...v1.1.0) (2023-05-16)
+
+
+### Features
+
+*  build script ([0c5c919](https://github.com/wc19950724/vue3-base-cli/commit/0c5c9193c40294a9af43277156d1797a20163337))
+
+
+### Performance Improvements
+
+*  hide files ([a11454a](https://github.com/wc19950724/vue3-base-cli/commit/a11454a663d5fe4332680f74ac792cb390614800))
+
+
+
 # [1.1.0-alpha.0](https://github.com/wc19950724/vue3-base-cli/compare/v1.0.10...v1.1.0-alpha.0) (2023-04-30)
 
 

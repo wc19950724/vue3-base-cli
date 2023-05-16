@@ -4,19 +4,19 @@
 
 To begin, you'll need to install `vue3-base-cli` globally:
 
-```console
+```js
 npm install -g vue3-base-cli
 ```
 
 or
 
-```console
+```js
 yarn add -g vue3-base-cli
 ```
 
 or
 
-```console
+```js
 pnpm add -g vue3-base-cli
 ```
 

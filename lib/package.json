@@ -1,0 +1,26 @@
+{
+  "name": "vue3-base-cli",
+  "version": "1.1.0-alpha.0",
+  "description": "vue3-base 项目脚手架安装工具",
+  "main": "cli.js",
+  "bin": {
+    "vue3-base": "cli.js"
+  },
+  "keywords": [
+    "vue3",
+    "ts",
+    "typescript",
+    "tdesign",
+    "tdesign-vue-next"
+  ],
+  "author": "948533798@qq.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wc19950724/vue3-base-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wc19950724/vue3-base-cli/issues"
+  },
+  "homepage": "https://github.com/wc19950724/vue3-base-cli#readme"
+}

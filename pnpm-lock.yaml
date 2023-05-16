@@ -65,8 +65,8 @@ devDependencies:
     specifier: ^2.8.8
     version: 2.8.8
   release-base-cli:
-    specifier: 0.0.1-rc.8
-    version: 0.0.1-rc.8
+    specifier: 0.0.4
+    version: 0.0.4
   rimraf:
     specifier: ^5.0.0
     version: 5.0.0
@@ -2860,8 +2860,8 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /release-base-cli@0.0.1-rc.8:
-    resolution: {integrity: sha512-30PPGb+cTa4XvRi+LfTvRYmddr3quL84qz5rqt26Qq+QHs7mbEoqOWmF8iDTUrrw2kCcmKmSZlRtBPKGsKlWjA==}
+  /release-base-cli@0.0.4:
+    resolution: {integrity: sha512-hB3HM8skLzj5X+IouIT34J68vOByJYS09e20HGELHIip8XzXj+rAYnDoG2ChxxYjGA3GZ8ymeDKH9LpPonF4FQ==}
     hasBin: true
     dev: true
 

@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { rimraf } from "rimraf";
 
+import { name as pkgName, version as pkgVersion } from "@/../package.json";
 import { gitPath } from "@/config";
 import { Options } from "@/types";
 import {
@@ -17,16 +18,12 @@ import {
 } from "@/utils";
 
 const cli = async () => {
-  const pkgPath = path.resolve(__dirname, "..", "package.json");
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-  const program = cac(pkg.name);
+  const program = cac(pkgName);
   program
     .command("create <project-name>")
     .option("-g, --git", "git clone url")
     .action(async (projectName: string, options: Options) => {
       try {
-        console.log("projectName:", projectName);
-        console.log("options:", options);
         let questionResult;
         try {
           questionResult = await promptQuestions(projectName);
@@ -81,7 +78,7 @@ const cli = async () => {
       }
     });
   program.help();
-  program.version(pkg.version);
+  program.version(pkgVersion);
   program.parse(process.argv);
 };
 

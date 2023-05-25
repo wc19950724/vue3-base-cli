@@ -15,6 +15,9 @@ const buildConfig = {
   format: "cjs",
   clean: true,
   external,
+  banner: {
+    js: "#!/usr/bin/env\n",
+  },
 };
 
 const rootPath = path.dirname(__dirname);

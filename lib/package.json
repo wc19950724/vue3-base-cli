@@ -2,7 +2,6 @@
   "name": "vue3-base-cli",
   "version": "1.1.0",
   "description": "vue3-base 项目脚手架安装工具",
-  "main": "cli.js",
   "bin": {
     "vue3-base": "cli.js"
   },
@@ -22,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/wc19950724/vue3-base-cli/issues"
   },
-  "homepage": "https://github.com/wc19950724/vue3-base-cli#readme"
+  "homepage": "https://github.com/wc19950724/vue3-base-cli#readme",
+  "dependencies": {
+    "cac": "^6.7.14",
+    "prompts": "^2.4.2",
+    "rimraf": "^5.0.1",
+    "semver": "^7.5.1"
+  }
 }

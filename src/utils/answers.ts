@@ -1,16 +1,16 @@
-import { prompt } from "enquirer";
+import prompts from "prompts";
 import { rimraf } from "rimraf";
 
-import { cmdInstalled, getCmds, run, step } from "./utils";
+import { cmdInstalled, getCmds, run, step } from "@/utils";
 
 /** 项目配置询问 */
-async function promptQuestions(name: string) {
-  const answers = await prompt<Record<string, string>>([
+const promptQuestions = async (name: string) => {
+  const answers = await prompts([
     {
-      type: "input",
+      type: "text",
       name: "name",
       message: "Project name:",
-      initial: () => name,
+      initial: name,
       validate: (input: string) => {
         const reg = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*)?[a-z0-9-~][a-z0-9-._~]*$/;
         if (!reg.test(input)) {
@@ -20,7 +20,7 @@ async function promptQuestions(name: string) {
       },
     },
     {
-      type: "input",
+      type: "text",
       name: "description",
       message: "description:",
       validate: (input: string) => {
@@ -32,7 +32,7 @@ async function promptQuestions(name: string) {
       },
     },
     {
-      type: "input",
+      type: "text",
       name: "author",
       message: "author:",
       validate: (input: string) => {
@@ -44,18 +44,20 @@ async function promptQuestions(name: string) {
       },
     },
   ]);
+  if (Object.keys(answers).length !== 3) return null;
   return answers;
-}
+};
 
 /** 删除同名项目确认 */
-async function deleteConfirm(dirName: string, dirPath: string) {
-  const { action } = await prompt<{ action: string }>([
+const deleteConfirm = async (dirName: string, dirPath: string) => {
+  const { action } = await prompts([
     {
       type: "toggle",
       name: "action",
       message: `Delete existing directory <${dirName}>?`,
-      initial: true,
-      stdin: process.stdin,
+      initial: "Y",
+      active: "Yes",
+      inactive: "no",
     },
   ]);
   if (action) {
@@ -64,11 +66,11 @@ async function deleteConfirm(dirName: string, dirPath: string) {
     return Promise.resolve();
   }
   return Promise.reject("Cancelled creation");
-}
+};
 
 /** 安装依赖确认 */
-async function installConfirm(dirName: string) {
-  const { yes } = await prompt<{ yes: string }>([
+const installConfirm = async (dirName: string) => {
+  const { yes } = await prompts([
     {
       type: "confirm",
       name: "yes",
@@ -93,23 +95,24 @@ async function installConfirm(dirName: string) {
   }
   step("Dependency installation successful!");
   return true;
-}
+};
 
 /** 选择node命令工具 */
-async function selectCmd(needSelection = true) {
+const selectCmd = async (needSelection = true) => {
   let command = "npm";
   const cmds = getCmds();
   if (cmds.length === 1) {
     command = cmds[0];
   } else if (cmds.length > 1) {
     if (needSelection) {
-      const { result } = await prompt<{
-        result: string;
-      }>({
+      const { result } = await prompts({
         type: "select",
         name: "result",
         message: "Select cmd type",
-        choices: cmds,
+        choices: cmds.map((cmd) => ({
+          value: cmd,
+          title: cmd,
+        })),
       });
       command = result;
     } else {
@@ -117,6 +120,6 @@ async function selectCmd(needSelection = true) {
     }
   }
   return command;
-}
+};
 
 export { deleteConfirm, installConfirm, promptQuestions, selectCmd };

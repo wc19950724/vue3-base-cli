@@ -16,7 +16,7 @@ const buildConfig = {
   clean: true,
   external,
   banner: {
-    js: "#!/usr/bin/env\n",
+    js: "#!/usr/bin/env node\n",
   },
 };
 

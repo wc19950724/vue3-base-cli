@@ -21,7 +21,9 @@ const cli = async () => {
   const program = cac(pkgName);
   program
     .command("create <project-name>")
-    .option("-g, --git", "git clone url")
+    .option("-g, --git <path>", "git clone url", {
+      default: gitPath,
+    })
     .action(async (projectName: string, options: Options) => {
       try {
         let questionResult;
@@ -75,6 +77,8 @@ const cli = async () => {
         } else {
           logger.log(error);
         }
+      } finally {
+        process.exit(0);
       }
     });
   program.help();

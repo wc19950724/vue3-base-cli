@@ -18,6 +18,9 @@ const buildConfig = {
   banner: {
     js: "#!/usr/bin/env node\n",
   },
+  splitting: true,
+  treeshake: true,
+  minify: true,
 };
 
 const rootPath = path.dirname(__dirname);

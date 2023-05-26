@@ -1,6 +1,6 @@
 {
   "name": "vue3-base-cli",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "vue3-base 项目脚手架安装工具",
   "bin": {
     "vue3-base": "cli.js"
